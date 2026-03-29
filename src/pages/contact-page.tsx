@@ -1,202 +1,210 @@
 import { motion } from 'framer-motion'
-import { Mail, MapPin, Phone } from 'lucide-react'
+import { Check, ChevronDown, Mail, MessageCircle, Truck } from 'lucide-react'
+import { useState, type FormEvent } from 'react'
 
 import { SeoHead } from '@/components/seo/seo-head'
-import { breadcrumbJsonLd, webPageJsonLd } from '@/components/seo/json-ld'
-import { PageHero } from '@/components/sections/page-hero'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { siteConfig } from '@/lib/seo'
+import { cn } from '@/lib/utils'
 
-const ease = [0.22, 1, 0.36, 1] as const
-
-const description =
-  'Contactez-nous pour discuter de votre projet. Devis gratuit, réponse rapide.'
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    webPageJsonLd('Contact', description, '/contact'),
-    breadcrumbJsonLd([
-      { name: 'Accueil', path: '/' },
-      { name: 'Contact', path: '/contact' },
-    ]),
-  ],
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-60px' },
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
 }
 
+const faqs = [
+  {
+    q: 'Combien de temps faut-il pour voir les résultats ?',
+    a: 'Les premiers résultats apparaissent généralement entre 2 et 4 semaines d\'utilisation régulière. Pour des résultats optimaux, nous recommandons une cure de 3 mois minimum.',
+  },
+  {
+    q: 'Les produits conviennent-ils à toutes les races ?',
+    a: 'Oui, nos compléments sont formulés pour convenir à toutes les races et tailles de chiens. Le dosage est adapté en fonction du poids de votre animal.',
+  },
+  {
+    q: 'Puis-je donner plusieurs compléments en même temps ?',
+    a: 'Absolument. Nos compléments sont conçus pour être complémentaires et peuvent être combinés sans risque. Consultez votre vétérinaire pour un programme personnalisé.',
+  },
+  {
+    q: 'Quelle est votre politique de retour ?',
+    a: 'Nous offrons une garantie satisfait ou remboursé de 30 jours. Si les résultats ne sont pas au rendez-vous, nous vous remboursons intégralement.',
+  },
+  {
+    q: 'Les frais de livraison sont-ils offerts ?',
+    a: 'La livraison est gratuite en France métropolitaine dès 50€ d\'achat. En dessous, les frais de livraison sont de 4,90€. Expédition sous 24-48h ouvrées.',
+  },
+  {
+    q: 'Où sont fabriqués vos produits ?',
+    a: 'Tous nos produits sont fabriqués en Europe, dans des laboratoires certifiés GMP+. Nous travaillons exclusivement avec des partenaires répondant aux normes les plus strictes.',
+  },
+]
+
 export function ContactPage() {
+  const [sent, setSent] = useState(false)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    await new Promise((r) => setTimeout(r, 1200))
+    setLoading(false)
+    setSent(true)
+  }
+
   return (
     <>
       <SeoHead
-        title="Contact"
-        description={description}
+        title="Aide & Contact"
+        description="Besoin d'aide ? Consultez notre FAQ ou contactez l'équipe PawVital."
         canonical="/contact"
-        jsonLd={jsonLd}
       />
 
-      <PageHero
-        eyebrow="Contact"
-        title="Parlons de votre projet"
-        description="Remplissez le formulaire ci-dessous ou contactez-nous directement. Nous répondons sous 24h."
-        image="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1920&q=80"
-        breadcrumb="Contact"
-      />
+      <section className="bg-gradient-to-b from-primary/5 to-background py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+          <motion.h1 {...fadeUp} className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+            Aide & Contact
+          </motion.h1>
+          <motion.p
+            {...fadeUp}
+            transition={{ ...fadeUp.transition, delay: 0.1 }}
+            className="mx-auto mt-4 max-w-xl text-muted-foreground"
+          >
+            Une question ? Consultez notre FAQ ci-dessous ou écrivez-nous directement.
+          </motion.p>
+        </div>
+      </section>
 
-      <section className="border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease }}
-            >
-              <Card className="rounded-2xl border-border/80 bg-card/70 shadow-[var(--shadow-md)] ring-1 ring-foreground/5">
-                <CardHeader>
-                  <CardTitle className="font-display text-lg">
-                    Envoyer un message
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <form
-                    className="space-y-5"
-                    onSubmit={(e) => e.preventDefault()}
+      <section className="py-12 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2">
+            {/* FAQ */}
+            <motion.div {...fadeUp}>
+              <h2 className="mb-6 font-display text-2xl font-bold">Questions fréquentes</h2>
+              <div className="space-y-3">
+                {faqs.map((faq, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl border border-border/70 bg-card"
                   >
-                    <div className="grid gap-5 sm:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="firstname">Prénom</Label>
-                        <Input
-                          id="firstname"
-                          name="firstname"
-                          placeholder="Jean"
-                          autoComplete="given-name"
-                          className="h-11 rounded-xl"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="lastname">Nom</Label>
-                        <Input
-                          id="lastname"
-                          name="lastname"
-                          placeholder="Dupont"
-                          autoComplete="family-name"
-                          className="h-11 rounded-xl"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="jean@entreprise.fr"
-                        autoComplete="email"
-                        className="h-11 rounded-xl"
+                    <button
+                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                      className="flex w-full items-center justify-between p-4 text-left"
+                    >
+                      <span className="pr-4 text-sm font-medium">{faq.q}</span>
+                      <ChevronDown
+                        className={cn(
+                          'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                          openFaq === i && 'rotate-180'
+                        )}
                       />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Téléphone (optionnel)</Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="06 12 34 56 78"
-                        autoComplete="tel"
-                        className="h-11 rounded-xl"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Votre message</Label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={5}
-                        placeholder="Décrivez votre projet en quelques mots..."
-                        className="w-full rounded-xl border border-input bg-transparent px-3 py-2.5 text-sm leading-relaxed text-foreground transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-                      />
-                    </div>
-                    <Button type="submit" size="lg" className="w-full">
-                      Envoyer le message
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease, delay: 0.06 }}
-              className="space-y-5"
-            >
-              <Card className="rounded-2xl border-border/80 bg-card/70 shadow-[var(--shadow-sm)] ring-1 ring-foreground/5">
-                <CardContent className="space-y-6 pt-6">
-                  <div className="flex items-start gap-4">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
-                      <Phone className="size-4" aria-hidden />
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">
-                        Téléphone
+                    </button>
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        height: openFaq === i ? 'auto' : 0,
+                        opacity: openFaq === i ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">
+                        {faq.a}
                       </p>
-                      <a
-                        href={`tel:${siteConfig.phone}`}
-                        className="text-sm text-muted-foreground hover:text-foreground"
-                      >
-                        {siteConfig.phone}
-                      </a>
-                    </div>
+                    </motion.div>
                   </div>
-                  <div className="flex items-start gap-4">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
-                      <Mail className="size-4" aria-hidden />
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">
-                        Email
-                      </p>
-                      <a
-                        href={`mailto:${siteConfig.email}`}
-                        className="text-sm text-muted-foreground hover:text-foreground"
-                      >
-                        {siteConfig.email}
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
-                      <MapPin className="size-4" aria-hidden />
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">
-                        Adresse
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {siteConfig.address.street}
-                        <br />
-                        {siteConfig.address.postalCode}{' '}
-                        {siteConfig.address.city}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="overflow-hidden rounded-2xl border border-border/80 bg-muted/30 shadow-[var(--shadow-sm)] ring-1 ring-foreground/5">
-                <div className="flex h-56 items-center justify-center text-sm text-muted-foreground">
-                  <p>
-                    Intégrez ici votre carte Google Maps
-                    <br />
-                    <span className="text-xs">(iframe ou API)</span>
-                  </p>
-                </div>
+                ))}
               </div>
             </motion.div>
+
+            {/* Contact Form */}
+            <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.15 }}>
+              <h2 className="mb-6 font-display text-2xl font-bold">Nous contacter</h2>
+
+              <div className="mb-6 flex gap-4">
+                <div className="flex items-center gap-2 rounded-xl bg-muted/50 px-4 py-3 text-sm">
+                  <Mail className="size-4 text-primary" />
+                  <a href={`mailto:${siteConfig.email}`} className="hover:underline">{siteConfig.email}</a>
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-muted/50 px-4 py-3 text-sm">
+                  <MessageCircle className="size-4 text-primary" />
+                  <span>24-48h ouvrées</span>
+                </div>
+              </div>
+
+              {sent ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="rounded-2xl border border-primary/20 bg-primary/5 p-8 text-center"
+                >
+                  <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10">
+                    <Check className="size-6 text-primary" />
+                  </div>
+                  <h3 className="font-display text-lg font-semibold">Message envoyé !</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Merci pour votre message. Notre équipe vous répondra sous 24-48h ouvrées.
+                  </p>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-border/70 bg-card p-6">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="contactName">Nom</Label>
+                      <Input id="contactName" placeholder="Marie Dupont" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="contactEmail">Email</Label>
+                      <Input id="contactEmail" type="email" placeholder="marie@example.com" required />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">Sujet</Label>
+                    <Input id="subject" placeholder="Question sur un produit..." required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Message</Label>
+                    <textarea
+                      id="message"
+                      rows={5}
+                      className="flex w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      placeholder="Décrivez votre question ou problème..."
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" size="lg" disabled={loading}>
+                    {loading ? 'Envoi...' : 'Envoyer le message'}
+                  </Button>
+                </form>
+              )}
+            </motion.div>
           </div>
+
+          {/* Shipping info */}
+          <motion.div
+            {...fadeUp}
+            className="mt-16 grid gap-6 sm:grid-cols-3"
+          >
+            {[
+              { icon: Truck, title: 'Livraison rapide', desc: 'Expédition sous 24-48h ouvrées. Gratuite dès 50€.' },
+              { icon: Mail, title: 'Support réactif', desc: 'Notre équipe répond à toutes vos questions sous 24-48h.' },
+              { icon: Check, title: 'Satisfait ou remboursé', desc: 'Garantie 30 jours. Retours gratuits et sans conditions.' },
+            ].map((item) => (
+              <div key={item.title} className="flex gap-4 rounded-2xl border border-border/50 bg-card p-5">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <item.icon className="size-5" />
+                </div>
+                <div>
+                  <h3 className="font-display text-sm font-semibold">{item.title}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
     </>

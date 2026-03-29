@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Mail, MapPin, Phone } from 'lucide-react'
+import { Mail } from 'lucide-react'
 
 import { Logo } from '@/components/layout/logo'
 import { Separator } from '@/components/ui/separator'
@@ -7,61 +7,54 @@ import { siteConfig } from '@/lib/seo'
 
 const navCols = [
   {
-    title: 'Navigation',
+    title: 'Nos Produits',
     links: [
-      { label: 'Accueil', to: '/' },
-      { label: 'À propos', to: '/a-propos' },
-      { label: 'Services', to: '/services' },
-      { label: 'Contact', to: '/contact' },
+      { label: 'Compléments pour chien', to: '/produits?cat=complements' },
+      { label: 'Croquettes pour chien', to: '/produits?cat=croquettes' },
+      { label: 'Friandises pour chien', to: '/produits?cat=friandises' },
     ],
   },
   {
-    title: 'Légal',
+    title: 'Aide et Contact',
     links: [
+      { label: 'Questions fréquentes', to: '/contact' },
+      { label: 'Livraison et retours', to: '/contact' },
+      { label: 'Nous contacter', to: '/contact' },
+    ],
+  },
+  {
+    title: 'À propos',
+    links: [
+      { label: 'Notre histoire', to: '/a-propos' },
       { label: 'Mentions légales', to: '/mentions-legales' },
-      { label: 'Politique de confidentialité', to: '/politique-de-confidentialite' },
+      { label: 'Confidentialité', to: '/politique-de-confidentialite' },
     ],
   },
 ] as const
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/80 bg-muted/25">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr]">
-          <div className="space-y-5">
+    <footer className="border-t border-border/60 bg-muted/20">
+      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <Logo />
-            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
               {siteConfig.description}
             </p>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <Phone className="size-4 shrink-0 text-primary" aria-hidden />
-                <a href={`tel:${siteConfig.phone}`} className="hover:text-foreground">
-                  {siteConfig.phone}
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="size-4 shrink-0 text-primary" aria-hidden />
-                <a href={`mailto:${siteConfig.email}`} className="hover:text-foreground">
-                  {siteConfig.email}
-                </a>
-              </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
-                <span>
-                  {siteConfig.address.street}, {siteConfig.address.postalCode}{' '}
-                  {siteConfig.address.city}
-                </span>
-              </li>
-            </ul>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Mail className="size-4 shrink-0 text-primary" aria-hidden />
+              <a href={`mailto:${siteConfig.email}`} className="hover:text-foreground">
+                {siteConfig.email}
+              </a>
+            </div>
           </div>
           {navCols.map((col) => (
-            <nav key={col.title} aria-label={col.title} className="space-y-4">
+            <nav key={col.title} aria-label={col.title} className="space-y-3">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
                 {col.title}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <Link
@@ -76,22 +69,16 @@ export function Footer() {
             </nav>
           ))}
         </div>
-        <Separator className="my-10 bg-border/80" />
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} {siteConfig.name}. Tous droits réservés.
+        <Separator className="my-8 bg-border/60" />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted-foreground">
+            &copy; {new Date().getFullYear()} {siteConfig.name}. Tous droits réservés.
           </p>
           <div className="flex gap-4">
-            <Link
-              to="/mentions-legales"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              Mentions légales
+            <Link to="/mentions-legales" className="text-xs text-muted-foreground hover:text-foreground">
+              CGV / Mentions légales
             </Link>
-            <Link
-              to="/politique-de-confidentialite"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
+            <Link to="/politique-de-confidentialite" className="text-xs text-muted-foreground hover:text-foreground">
               Confidentialité
             </Link>
           </div>

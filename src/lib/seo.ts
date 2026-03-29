@@ -1,18 +1,18 @@
 export const siteConfig = {
-  name: 'Nom Entreprise',
-  url: 'https://www.example.com',
+  name: 'PawVital',
+  url: 'https://www.pawvital.fr',
   locale: 'fr_FR',
   description:
-    'Votre entreprise — description courte et percutante de votre activité. Adaptez cette ligne à votre domaine.',
-  ogImage: 'https://www.example.com/og.png',
-  twitterHandle: '@votrecompte',
-  themeColor: '#6d28d9',
-  phone: '+33 1 23 45 67 89',
-  email: 'contact@example.com',
+    'Compléments alimentaires naturels pour chiens. Formulés par des vétérinaires, approuvés par + de 75 000 chiens heureux.',
+  ogImage: 'https://www.pawvital.fr/og.png',
+  twitterHandle: '@pawvital',
+  themeColor: '#1a8a7a',
+  phone: '+33 1 86 76 54 32',
+  email: 'hello@pawvital.fr',
   address: {
-    street: '12 Rue Exemple',
-    city: 'Paris',
-    postalCode: '75001',
+    street: '24 Rue du Bien-Être Animal',
+    city: 'Lyon',
+    postalCode: '69002',
     country: 'FR',
   },
 } as const
@@ -34,8 +34,12 @@ export function buildTitle(page?: string) {
 
 export const routes = [
   '/',
+  '/produits',
+  '/produit/:slug',
+  '/panier',
+  '/checkout',
+  '/connexion',
   '/a-propos',
-  '/services',
   '/contact',
   '/mentions-legales',
   '/politique-de-confidentialite',
