@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Box, ChevronRight, CreditCard, Eye, EyeOff, Gift, Heart, LogOut, MapPin, Package, Settings, Star, Truck, User } from 'lucide-react'
+import { Box, ChevronRight, CreditCard, Eye, EyeOff, Gift, Heart, LogOut, MapPin, Package, Settings, Star, Truck } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 

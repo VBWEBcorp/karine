@@ -35,7 +35,7 @@ export function ProductDetailPage() {
   ).slice(0, 2)
 
   function handleAddToCart() {
-    addToCart(product, quantity)
+    addToCart(product!, quantity)
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
   }
