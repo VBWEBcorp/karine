@@ -60,7 +60,7 @@ const pillars = [
     icon: Leaf,
     title: 'Des ingrédients puissants',
     description: 'Soigneusement choisis pour leur pureté, pour une biodisponibilité optimale.',
-    image: 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=400&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&h=300&fit=crop',
   },
   {
     icon: ShieldCheck,
