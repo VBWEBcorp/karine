@@ -131,7 +131,7 @@ export function Navbar() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.28, ease: "easeOut" }}
+              transition={{ duration: 0.28, ease: "easeOut" as const }}
               className="border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden"
             >
               <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 sm:px-6">
